@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace Myrstacken
 {
     class Program
@@ -123,6 +125,7 @@ namespace Myrstacken
 					{
 						Console.WriteLine(e.GetType().ToString() + ": Error");
 					}
+
 					*/
 
                 }
@@ -167,7 +170,6 @@ namespace Myrstacken
                         Console.ResetColor();   
                     }
                 }
-
                 */
             }
         }
@@ -190,7 +192,8 @@ namespace Myrstacken
 
             public override string ToString()
             {
-                return name + ", " + legs;
+				//name = name.Substring(0, 1).ToUpper(); name.Substring(1).ToLower();
+				return name + ", " + legs;
             }
         }
     }
