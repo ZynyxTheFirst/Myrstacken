@@ -64,12 +64,12 @@ namespace Myrstacken
                         }
                     }
                 }
-                if (input == "help")
+                else if (input == "help")
                 {
-                    Console.WriteLine("type 'exit' to exit \ntype 'addmyra' to add a myra \ntype listmyra to list all the myror \ntype add [name] [legs] to add a myra");
+                    Console.WriteLine("type 'exit' to exit \ntype 'addmyra' to add a myra (not working) \ntype listmyra to list all the myror \ntype add [name] [legs] to add a myra");
                 }
 
-                if (input == "addmyra")
+                else if (input == "addmyra")
                 {
                     Console.WriteLine("Enter the name of the myra: ");
                     string name = Console.ReadLine();
@@ -100,6 +100,7 @@ namespace Myrstacken
                             Console.ResetColor();
                         }
                     } while (numlegs == 0);
+
                     /*
 
 					Console.WriteLine("Enter the number of legs on myra " + name + ":");
@@ -126,7 +127,7 @@ namespace Myrstacken
 
                 }
 
-                if (input == "listmyra")
+                else if (input == "listmyra")
                 {
                     for (int i = 0; i < myror.Length; i++)
                     {
@@ -140,14 +141,40 @@ namespace Myrstacken
                     }
                 }
 
-                if (input == "exit")
+                else if (input == "exit")
+                {
                     Environment.Exit(0);
+
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Unknown command");
+                    Console.ResetColor();
+                }
+
+                /*
+                switch (input)
+                {
+                    case "exit":
+                            break;
+                    case "listmyra":
+                        break;
+                    default:
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Unknown command");
+                        Console.ResetColor();   
+                    }
+                }
+
+                */
             }
         }
 
         class Myrstack
         {
-
+            Myra[] myror;
         }
 
         class Myra
