@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 
 #pragma warning disable IDE0044
 
 class Program
 {
-	List<Myra> myror = new List<Myra>();
 	Myrstack myrstack = new Myrstack();
 
 	static void Main()
@@ -16,6 +14,7 @@ class Program
 
 	void Run()
 	{
+		myrstack.Loading();
 		myrstack.Start();
 		while (true)
 		{
@@ -23,75 +22,37 @@ class Program
 
 			string[] command = input.Split(" ");
 
-			if (command[0] == "add")
-			{
-				myrstack.InitialAdd(command);
-			}
-			/*
-			if (command[0] == "sort")
-			{
-				myrstack.Sort();
-			}
-			*/
-			if (command[0] == "find")
-			{
-				myrstack.Find(command);
-			}
-
-			if (command[0] == "findlegs")
-			{
-				myrstack.FindLegs(command);
-			}
-
-			if (command[0] == "remove")
-			{
-				myrstack.Remove(command);
-			}
-
-			if (command[0] == "help")
-			{
-				myrstack.Help();
-			}
-
-			if (command[0] == "list")
-			{
-				myrstack.List();
-			}
-
-			if (command[0] == "listmyra")
-			{
-				myrstack.ListMyra();
-			}
-
-			if (command[0] == "clear")
-			{
-				myrstack.Clear();
-			}
-
-			if (command[0] == "exit")
-			{
-				Environment.Exit(0);
-			}
-
 			switch (command[0])
 			{
 				case "exit":
+					Environment.Exit(0);
+					break;
+				case "change":
+					myrstack.Change(command);
 					break;
 				case "listmyra":
+					myrstack.ListMyra();
 					break;
 				case "list":
+					myrstack.List();
 					break;
 				case "help":
+					myrstack.Help();
 					break;
 				case "clear":
+					myrstack.Clear();
 					break;
 				case "add":
+					myrstack.InitialAdd(command);
+					break;
+				case "sort":
+					myrstack.Sort(command);
 					break;
 				case "remove":
+					myrstack.Remove(command);
 					break;
 				case "find":
-					break;
-				case "findlegs":
+					myrstack.Find(command);
 					break;
 				default:
 					Console.ForegroundColor = ConsoleColor.Yellow;

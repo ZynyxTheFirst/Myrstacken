@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security;
 using System.Threading;
 
 class Myrstack
@@ -9,10 +8,6 @@ class Myrstack
 
 	public void Start()
 	{
-		Console.WriteLine("Press any key to start!");
-		Console.ReadKey();
-		Loading();
-		Console.Clear();
 		Console.ForegroundColor = ConsoleColor.Green;
 		Console.WriteLine(@"                       _             _              ");
 		Console.WriteLine(@"  /\/\  _   _ _ __ ___| |_ __ _  ___| | _____ _ __  ");
@@ -26,15 +21,50 @@ class Myrstack
 		Console.WriteLine("Enter command: ");
 	}
 
-	public void Sort()
-	{
-		myror.Sort();
-	}
+	/// <summary>
+	/// Compares the first element to the next. If it should be placed higher it returns a 1 if it is to be placed lower it returns a -1. Goes through every element this way until it is properly sorted.
+	/// </summary>
+	/// <param name="order"></param>
+	/// <return>Returns the list ín the sorted order</return>
+	/// <remarks>Changes the list order permanently</remarks>
 
+	public void Sort(string[] order)
+	{
+		if (order.Length > 2)
+		{
+			SyntaxError();
+		}
+		else
+		{
+			switch (order[1])
+			{
+				case "nameasc":
+					myror.Sort((a1, a2) => a1.GetName().CompareTo(a2.GetName()));
+					ListMyra();
+					break;
+				case "namedesc":
+					myror.Sort((a1, a2) => a2.GetName().CompareTo(a1.GetName()));
+					ListMyra();
+					break;
+				case "legsasc":
+					myror.Sort((a1, a2) => a1.GetLegs().CompareTo(a2.GetLegs()));
+					ListMyra();
+					break;
+				case "legsdesc":
+					myror.Sort((a1, a2) => a2.GetLegs().CompareTo(a1.GetLegs()));
+					ListMyra();
+					break;
+				default:
+					WrongInput();
+					break;
+			}
+		}
+	}
+	
 	public void Clear()
 	{
 		Console.Clear();
-		Console.WriteLine("Enter command: ");
+		Start();
 	}
 
 	public void Add(string name, string legs)
@@ -42,44 +72,14 @@ class Myrstack
 		Myra myra = new Myra(name, int.Parse(legs).ToString());
 		CheckDuplicate(myra);
 		myror.Add(myra);
+		Console.ForegroundColor = ConsoleColor.Green;
+		Console.WriteLine("Succsesfully added");
+		Console.ResetColor();
 	}
 
-	public void Find(string[] search)
+	public void Change(string[] change)
 	{
-		if (search.Length > 2)
-		{
-			SyntaxError();
-		}
-		else
-		{
-			try
-			{
-				for (int i = myror.Count - 1; i >= 0; i--)
-				{
-					if (myror[i].GetName().ToLower() == search[1].ToLower())
-					{
-						Console.ForegroundColor = ConsoleColor.Cyan;
-						Console.WriteLine(myror[i].ToString() + " Exists!");
-						Console.ResetColor();
-					}
-					else
-					{
-						Console.ForegroundColor = ConsoleColor.Yellow;
-						Console.WriteLine("There is no myra with that name");
-						Console.ResetColor();
-					}
-				}
-			}
-			catch
-			{
-				WrongInput();
-			}
-		}
-	}
-
-	public void FindLegs(string[] searchlegs)
-	{
-		if (searchlegs.Length > 2)
+		if (change.Length > 4)
 		{
 			SyntaxError();
 		}
@@ -90,7 +90,103 @@ class Myrstack
 				bool found = false;
 				for (int i = myror.Count - 1; i >= 0; i--)
 				{
-					if (myror[i].legs == searchlegs[1])
+					if (change[1] == "name")
+					{
+						if (myror[i].GetName().ToLower() == change[2].ToLower())
+						{
+							found = true;
+							myror[i].name = change[3];
+							Console.ForegroundColor = ConsoleColor.Green;
+							Console.WriteLine("Succsesfully renamed");
+							Console.ResetColor();
+						}
+						if (!found)
+						{
+							Console.ForegroundColor = ConsoleColor.Yellow;
+							Console.WriteLine("There is no myra with that name");
+							Console.ResetColor();
+						}
+					}
+					else if (change[1] == "legs")
+					{
+						if (myror[i].GetName().ToLower() == change[2].ToLower())
+						{
+							try
+							{
+								found = true;
+								myror[i].legs = int.Parse(change[3]).ToString();
+								Console.ForegroundColor = ConsoleColor.Green;
+								Console.WriteLine("Succsesfully changed");
+								Console.ResetColor();
+							}
+							catch (Exception)
+							{
+								WrongInput();
+							}
+						}
+						if (!found)
+						{
+							Console.ForegroundColor = ConsoleColor.Yellow;
+							Console.WriteLine("There is no myra with that name");
+							Console.ResetColor();
+						}
+					}
+				}
+			}
+			catch
+			{
+				WrongInput();
+			}
+		}
+	}
+
+	/// <summary>
+	/// Decides wheter to search by name or by legs. Then takes a input of desired name or desired amount of legs and searches the list for that name or amount.
+	/// </summary>
+	/// <param name="search"></param>
+	/// <return>returns a list of the elements found</return>
+
+	public void Find(string[] search)
+	{
+		if (search.Length > 3)
+		{
+			SyntaxError();
+		}
+		else if (search[1] == "name")
+		{
+			try
+			{
+				bool found = false;
+				for (int i = myror.Count - 1; i >= 0; i--)
+				{
+					if (myror[i].GetName().ToLower() == search[2].ToLower())
+					{
+						Console.ForegroundColor = ConsoleColor.Cyan;
+						Console.WriteLine(myror[i].ToString() + " Exists!");
+						Console.ResetColor();
+						found = true;
+					}
+				}
+				if (!found)
+				{
+					Console.ForegroundColor = ConsoleColor.Yellow;
+					Console.WriteLine("There is no myra with that name");
+					Console.ResetColor();
+				}
+			}
+			catch
+			{
+				WrongInput();
+			}
+		}
+		else if (search[1] == "legs")
+		{
+			try
+			{
+				bool found = false;
+				for (int i = myror.Count - 1; i >= 0; i--)
+				{
+					if (myror[i].legs == search[2])
 					{
 						Console.ForegroundColor = ConsoleColor.Cyan;
 						Console.WriteLine(myror[i].ToString() + " Exists!");
@@ -125,7 +221,12 @@ class Myrstack
 				for (int i = myror.Count - 1; i >= 0; i--)
 				{
 					if (myror[i].GetName().ToLower() == remove[1].ToLower())
+					{
 						myror.RemoveAt(i);
+						Console.ForegroundColor = ConsoleColor.Green;
+						Console.WriteLine("Succesfully removed");
+						Console.ResetColor();
+					}
 				}
 			}
 			catch
@@ -168,14 +269,23 @@ class Myrstack
 
 	public void ListMyra()
 	{
-		for (int i = 0; i < myror.Count; i++)
+		if (myror.Count != 0)
 		{
-			if (myror[i] != null)
+			for (int i = 0; i < myror.Count; i++)
 			{
-				Console.ForegroundColor = ConsoleColor.Cyan;
-				Console.WriteLine(myror[i].ToString());
-				Console.ResetColor();
+				if (myror[i] != null)
+				{
+					Console.ForegroundColor = ConsoleColor.Cyan;
+					Console.WriteLine(myror[i].ToString());
+					Console.ResetColor();
+				}
 			}
+		}
+		else
+		{
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine("the myrstack is empty");
+			Console.ResetColor();
 		}
 	}
 
@@ -187,7 +297,16 @@ class Myrstack
 	public void Help()
 	{
 		Console.ForegroundColor = ConsoleColor.Cyan;
-		Console.WriteLine("type 'help' for a list of commands \ntype 'exit' to exit \ntype find [name] to check if a myra with that name exists \ntype listmyra to list all the myror \ntype list to list the amount of ants \ntype add [name] [legs] to add a myra \ntype remove [name] to remove a myra \ntype 'clear' to clear the console");
+		Console.WriteLine("type 'help' for a list of commands");
+		Console.WriteLine("type 'exit' to exit");
+		Console.WriteLine("type 'find 'legs'/'name' [name/legs] to check if a myra with that name or that amount of names exists exists");
+		Console.WriteLine("type 'listmyra' to list all the myror ");
+		Console.WriteLine("type 'list' to list the amount of ants");
+		Console.WriteLine("type 'add [name] [legs]' to add a myra");
+		Console.WriteLine("type 'remove [name]' to remove a myra");
+		Console.WriteLine("type 'clear' to clear the console");
+		Console.WriteLine("type 'change 'legs'/'name' [legs/name]' to change the name or amount of legs on a myra");
+		Console.WriteLine("type 'sort 'nameasc'/'namedesc'/'legsasc'/'legsdesc'' to sort by eiter legs or name in an ascending or descending order");
 		Console.ResetColor();
 	}
 
@@ -219,8 +338,10 @@ class Myrstack
 		}
 	}
 
-	static void Loading()
+	public void Loading()
 	{
+		Console.WriteLine("Press any key to start!");
+		Console.ReadKey();
 		for (int i = 0; i <= 100; i++)
 		{
 			Console.Write($"\nProgress: {i}%");
@@ -228,31 +349,7 @@ class Myrstack
 		}
 
 		Console.Write("\nDone!");
-	}
-
-	private static SecureString Pass()
-	{
-		Console.WriteLine("Enter Password");
-		SecureString pass = new SecureString();
-		ConsoleKeyInfo KeyInfo;
-		do
-		{
-			KeyInfo = Console.ReadKey(true);
-			if (!char.IsControl(KeyInfo.KeyChar))
-			{
-				pass.AppendChar(KeyInfo.KeyChar);
-				Console.Write("*");
-			}
-			else if (KeyInfo.Key == ConsoleKey.Backspace && pass.Length > 0)
-			{
-				pass.RemoveAt(pass.Length - 1);
-				Console.Write("\b \b");
-			}
-		}
-		while (KeyInfo.Key != ConsoleKey.Enter);
-		{
-			return pass;
-		}
+		Console.Clear();
 	}
 }
 

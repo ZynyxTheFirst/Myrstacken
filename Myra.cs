@@ -2,7 +2,7 @@
 
 class Myra : IComparable
 {
-	private string name;
+	public string name;
 	public string legs;
 
 	public Myra(string name, string legs)
@@ -16,6 +16,11 @@ class Myra : IComparable
 		return name;
 	}
 
+	public string GetLegs()
+	{
+		return legs;
+	}
+
 	public override string ToString()
 	{
 		name = name.Substring(0, 1).ToUpper() + name.Substring(1).ToLower();
@@ -24,6 +29,6 @@ class Myra : IComparable
 
 	public int CompareTo(object obj)
 	{
-		throw new NotImplementedException();
+		return this.name.CompareTo(((Myra)obj).name);
 	}
 }
