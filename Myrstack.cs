@@ -77,6 +77,12 @@ class Myrstack
 		Console.ResetColor();
 	}
 
+    /*
+     * Robin:
+     * Intressant metod. Skulle behöva förtydliga hur man använder den, då det inte är uppenbart att 4
+     * kommandon ska ges, utan endast 3 framkommer i instruktionerna. Den är också lite farlig, då den
+     * tillåter myror att få samma namn.
+     */
 	public void Change(string[] change)
 	{
 		if (change.Length > 4)
@@ -156,6 +162,14 @@ class Myrstack
 		{
 			try
 			{
+                /*
+                 * Robin:
+                 * Hade man kunnat skippa found booleanerna här? t.ex. sätta en return om myran hittas,
+                 * och sedan låta det andra köras om man kommer dit?
+                 * 
+                 * I och med att myror inte kan ha samma namn så kan man kanske slänga in en break; så att
+                 * loopen inte fortsätter iterera över myror när den redan hittat en?
+                 */
 				bool found = false;
 				for (int i = myror.Count - 1; i >= 0; i--)
 				{
@@ -353,6 +367,10 @@ class Myrstack
 	}
 }
 
+/*
+ * Robin:
+ * Snyggt!
+ */
 class MyraAlreadyExistException : Exception
 {
 

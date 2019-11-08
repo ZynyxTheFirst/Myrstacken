@@ -2,6 +2,11 @@
 
 class Myra : IComparable
 {
+    /*
+     * Robin:
+     * Idéen med Get-metoder försvinner lite om variablerna ändå är publika. SKulle vilje se
+     * att de privata.
+     */
 	public string name;
 	public string legs;
 
